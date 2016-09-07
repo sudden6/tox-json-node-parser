@@ -13,4 +13,4 @@ Compile it:
 
 # License
 
-Licensed under GPLv3+, for details see [COPYING](/COPYING). 
+Licensed under GPLv3+, for details see [LICENSE](/LICENSE). 
