@@ -1,0 +1,8 @@
+[package]
+
+name = "tox-json-node-parser"
+version = "0.0.1"
+authors = [ "sudden6 <sudden6@gmx.at>" ]
+
+[dependencies]
+rustc-serialize = "0.3.19"
