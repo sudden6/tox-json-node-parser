@@ -20,20 +20,36 @@ use rustc_serialize::json::Json;
 
 use std::io;
 use std::io::prelude::*;
+use std::env;
 
 fn main() {
-	
-	// read data from stdin
-    let mut stdin = io::stdin();
-    let mut input_json = String::new();
-    stdin.read_to_string(&mut input_json).unwrap();
-    
-    // parse it to json
-    let json = Json::from_str(&input_json).unwrap();
+	let mut ipv4_en: bool = false;
+	let mut ipv6_en: bool = false;
 
-    // find the part that holds the bootstrap nodes
-    let nodes = json.find("nodes").unwrap().as_array().unwrap();
-	
+	let args: Vec<String> = env::args().collect();
+
+	if args.len() > 1 {
+		match args[1].as_str() {
+			"-6" => ipv6_en = true,
+			"-4" => ipv4_en = true,
+			_ => {ipv6_en = true; ipv4_en = true},
+		}
+	} else {
+		ipv4_en = true;
+		ipv6_en = true;
+	}
+
+	// read data from stdin
+	let mut stdin = io::stdin();
+	let mut input_json = String::new();
+	stdin.read_to_string(&mut input_json).unwrap();
+    
+	// parse it to json
+	let json = Json::from_str(&input_json).unwrap();
+
+	// find the part that holds the bootstrap nodes
+	let nodes = json.find("nodes").unwrap().as_array().unwrap();
+
 	for node in nodes {
 		let node_obj = node.as_object().unwrap();
 
@@ -43,10 +59,12 @@ fn main() {
 		let port = node_obj.get("port").unwrap();
 		let pk   = node_obj.get("public_key").unwrap().as_string().unwrap();
 		let name = node_obj.get("maintainer").unwrap().as_string().unwrap();
-		
-		println!("{} {} {} {}", ipv4, port, pk, name);
+
+		if ipv4 != "-" && ipv4_en {
+			println!("{} {} {} {}", ipv4, port, pk, name);
+		}
 		// also print ipv6 part if it exists
-		if ipv6 != "-" {
+		if ipv6 != "-" && ipv6_en {
 			println!("{} {} {} {}", ipv6, port, pk, name);
 		}
 	}

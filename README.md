@@ -10,6 +10,11 @@ Compile it:
 3. Download the data as nodes.json from <https://nodes.tox.chat/json>
 4. Run with `./target/debug/./target/debug/tox-json-node-parser < nodes.json`
 
+# Options
+
+Use `-6` to only output IPv6 nodes or `-4` to only output IPv4 nodes, if no
+or invalid arguments are used both are output. Additional arguments will be
+ignored.
 
 # License
 
